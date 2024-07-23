@@ -28,6 +28,7 @@ func main() {
 	go startWatchers(ctx)
 
 	vaultAddr := os.Getenv("VAULT_ADDR")
+	logLevel, logLevelSet := os.LookupEnv("LOG_LEVEL")
 	tick := time.Tick(4 * time.Second)
 
 	for {
@@ -50,7 +51,11 @@ func main() {
 			// get the vault tokens
 			vaultClient, vaultToken, err := AuthenticateToVault(vaultAddr, svid.Marshal(), "dev")
 			if err != nil {
-				log.Printf("Fetch Secret: ID: %v; Unable to autheticate to vault", svid.ID)
+				if (logLevelSet && logLevel == "debug") {
+					log.Printf("Error authenticating to Vault:%s", err)
+				} else {
+					log.Printf("Fetch Secret: ID: %v; Unable to autheticate to vault", svid.ID)
+				}
 				continue
 			}
 

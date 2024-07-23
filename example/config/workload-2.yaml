@@ -13,9 +13,11 @@ spec:
       readOnly: true
     env:
     - name: VAULT_ADDR
-      value: 10.128.0.62
+      value: http://10.128.0.62:8200
     - name: SPIFFE_ENDPOINT_SOCKET
       value: unix:///spiffe-workload-api/spire-agent.sock
+    - name: LOG_LEVEL
+      value: info
   volumes:
   - name: spiffe-workload-api
     csi:
